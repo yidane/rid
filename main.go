@@ -48,24 +48,26 @@ func main() {
 }
 
 func handCommand(command string) {
-	args := strings.Split(command, " ")
-	switch args[0] {
+	commands := strings.Split(command, " ")
+	commandName := commands[0]
+	args := commands[1:]
+	switch commandName {
 	case "output":
-		output(args[0:])
+		output(args)
 	case "load":
-		load(args[0:])
+		load(args)
 	case "list":
-		list(args[0:])
+		list(args)
 	case "use":
-		list(args[0:])
+		list(args)
 	case "clear":
-		clear(args[0:])
+		clear(args)
 	case "download":
-		download(args[0:])
+		download(args)
 	case "add":
-		add(args[0:])
+		add(args)
 	case "rm":
-		rm(args[0:])
+		rm(args)
 	default:
 		errorCommand(command)
 	}

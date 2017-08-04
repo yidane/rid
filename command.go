@@ -20,17 +20,18 @@ func output(args []string) {
 
 func load(args []string) {
 	if len(args) > 1 {
-		log.Error("command 'load' need at most one argument which is a folder")
+		log.Error("command 'load' need at most one argument,you can input 'load' to show all databases,or you can input 'load dbname' to show all tables of dbname")
 	}
 
 	if len(args) == 0 { //load all database
-		ridClient.LoadDataBase()
-	} else { // load all tables of some database
-		if ridClient.CurrentDB == nil {
-			log.Warn("you need shoose database first by using command 'use'")
-			return
+		dbArr, err := ridClient.LoadDataBase()
+		if err != nil {
+			log.Error(err)
 		}
 
+		log.Succeed(dbArr)
+	} else { // load all tables of some database
+		fmt.Println(args[0])
 		ridClient.LoadTables(args[0])
 	}
 }
@@ -69,7 +70,24 @@ func add(args []string) {
 }
 
 func download(args []string) {
+	if len(args) > 1 {
+		log.Error("command 'download' do not need any argument")
+		return
+	}
+	if ridClient.CurrentDB == nil {
+		log.Error("you must choose one database first by using command 'use dbname'")
+		return
+	}
+	if ridClient.selectedTables == nil || len(ridClient.selectedTables) == 0 {
+		log.Error("you must select some table of the choosed database  by using command 'add table'")
+		return
+	}
+	if ridClient.Output == "" {
+		log.Error("you must set output fold before download by using command 'add table'")
+		return
+	}
 
+	ridClient.DownloadAll()
 }
 
 func rm(args []string) {

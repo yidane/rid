@@ -102,71 +102,86 @@ func (ridClient *RidClient) Login(uid, pwd string) error {
 }
 
 //LoadDataBase load all database that current user can view
-func (ridClient *RidClient) LoadDataBase() error {
+func (ridClient *RidClient) LoadDataBase() ([]string, error) {
 	if ridClient.Cookies == nil {
-		return errors.New("请先登录后在加载数据库信息")
+		return nil, errors.New("请先登录后在加载数据库信息")
+	}
+
+	if ridClient.allDBs != nil {
+		dbArr := make([]string, len(ridClient.allDBs))
+		for db := range ridClient.allDBs {
+			dbArr = append(dbArr, db)
+		}
+
+		return dbArr, nil
 	}
 
 	req, err := ridClient.newRequest("GET", loadDataBaseURL)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	data, err := ridClient.getResponseContent(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	reg, _ := regexp.Compile(`\[{\"id.*\]`)
 	if !reg.Match(data) {
-		return errors.New("未找到相应数据库信息")
+		return nil, errors.New("未找到相应数据库信息")
 	}
 
 	dbs := []*DBInfo{}
 	err = json.Unmarshal(reg.Find(data), &dbs)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	ridClient.allDBs = make(map[string]*DBInfo)
+	result := make([]string, len(dbs))
 	for _, db := range dbs {
 		ridClient.allDBs[db.Name] = db
+		result = append(result, db.Name)
 	}
 
-	return nil
+	return result, nil
 }
 
 //LoadTables load all tables of the database named dbName
-func (ridClient *RidClient) LoadTables(dbName string) error {
-	if !ridClient.SetCurrentDatabase(dbName) {
-		return errors.New("不存在数据库[" + dbName + "]")
+func (ridClient *RidClient) LoadTables(dbName string) ([]string, error) {
+	if tables, ok := ridClient.allTables[dbName]; ok {
+		return tables, nil
 	}
 
 	req, err := ridClient.newRequest("GET", loadTablesURL+strconv.Itoa(ridClient.CurrentDB.ID))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	data, err := ridClient.getResponseContent(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	reg, _ := regexp.Compile(`\[.*\]`)
 	if !reg.Match(data) {
-		return errors.New("查询返回数据结果集为空")
+		return nil, errors.New("查询返回数据结果集为空")
 	}
 
 	type tableInfo struct {
 		DbName string `json:"dbName"`
 	}
+
 	tables := []tableInfo{}
 	err = json.Unmarshal(reg.Find(data), &tables)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	ridClient.selectedTables = make(map[string]int)
+	if ridClient.allTables == nil {
+		ridClient.allTables = make(map[string][]string)
+	}
+
 	if len(tables) > 0 {
 		ts := []string{}
 		for _, t := range tables {
@@ -175,7 +190,7 @@ func (ridClient *RidClient) LoadTables(dbName string) error {
 		ridClient.allTables[dbName] = ts
 	}
 
-	return nil
+	return nil, nil
 }
 
 //Download download biz data
