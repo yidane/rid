@@ -2,22 +2,25 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strings"
 
 	"github.com/yidane/rid/log"
+	"github.com/yidane/rid/context"
+	 "github.com/yidane/rid/command"
+	"flag"
+	"errors"
+	"time"
 )
 
-var ridClient *RidClient
+var ridContext *context.RidContext
 
 func main() {
-	err := login()
+	err :=login()
 	if err != nil {
 		log.Error(err)
 		return
 	}
-
 	log.Info("login rid successful!")
 
 	running := true
@@ -27,48 +30,41 @@ func main() {
 		if len(data) == 0 {
 			continue
 		}
-		command := strings.ToLower(strings.Trim(string(data), ""))
+		input := strings.ToLower(strings.Trim(string(data), ""))
+		inputs := strings.Split(input, " ")
+		cName := inputs[0]
+		cArgs := inputs[1:]
 
-		if len(command) < 2 {
-			errorCommand(command)
-			continue
-		}
-
-		if command == "help" {
-			help()
-		} else if command == "exit" {
-			exit()
+		switch cName {
+		case "help":
+			command.Help(cArgs)
+		case "exit":
 			running = false
-		} else {
-			handCommand(command)
+			log.Succeed("rid is being exit")
+		default:
+			command.Exec(ridContext,cName, cArgs...)
 		}
 	}
 
-	fmt.Println("rid")
+	log.Succeed("finish ",time.Now().String())
 }
 
-func handCommand(command string) {
-	commands := strings.Split(command, " ")
-	commandName := commands[0]
-	args := commands[1:]
-	switch commandName {
-	case "output":
-		output(args)
-	case "load":
-		load(args)
-	case "list":
-		list(args)
-	case "use":
-		list(args)
-	case "clear":
-		clear(args)
-	case "download":
-		download(args)
-	case "add":
-		add(args)
-	case "rm":
-		rm(args)
-	default:
-		errorCommand(command)
+
+func login()error{
+	uid := flag.String("uid", "", "What is your rid userid?")
+	pwd := flag.String("pwd", "", "What is your rid password?")
+
+	flag.Parse()
+
+	if *uid == "" {
+		flag.PrintDefaults()
+		return  errors.New("please use -uid to set rid userid")
 	}
+	if *pwd == "" {
+		flag.PrintDefaults()
+		return errors.New("please use -uid to set rid userid")
+	}
+
+	ridContext = context.NewRidContext()
+	return ridContext.Login(*uid, *pwd)
 }

@@ -4,6 +4,10 @@ import (
 	syslog "log"
 )
 
+func init(){
+	//判断操作系统，分别做日志颜色处理
+}
+
 //Error display error
 func Error(v ...interface{}) {
 	syslog.Printf("%c[1;0;31m%s%c[0m\n", 0x1B, v, 0x1B)
