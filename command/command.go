@@ -1,17 +1,18 @@
 package command
 
 import (
-	"github.com/yidane/rid/context"
-	"sync"
+	"errors"
 	"fmt"
+	"github.com/yidane/rid/context"
 	"github.com/yidane/rid/log"
-	"strings"
 	"regexp"
+	"strings"
+	"sync"
 )
 
 type Command interface {
 	Name() string
-	Exec(ricContext *context.RidContext, args ...string)
+	Exec(ridContext *context.RidContext, args ...string)
 	Usage() string
 }
 
@@ -23,6 +24,7 @@ func init() {
 		packageCommand(AddCommand{})
 		packageCommand(ClearCommand{})
 		packageCommand(DownloadCommand{})
+		packageCommand(FindCommand{})
 		packageCommand(ListCommand{})
 		packageCommand(LoadCommand{})
 		packageCommand(OutCommand{})
@@ -61,55 +63,37 @@ func Exec(ridContext *context.RidContext, cName string, args ...string) {
 
 func Help(commandName ...[]string) {
 	//output all usage
+	fmt.Println(commandName)
 }
 
 //采用%作为通配符
-//%ne 表示以ne结尾的匹配
-//yi% 表示以yi
-//func isMatch(reg, str string) bool {
-//	reg = strings.Trim(reg, "")
-//	l := len(reg)
-//	if l == 0 {
-//		return false
-//	}
-//
-//	newReg := ""
-//	switch l {
-//	case 1:
-//		if reg[0] == '%' {
-//			return false
-//		}
-//	case 2:
-//		if reg[0] == '%' {
-//			newReg += "(.*)"
-//		} else {
-//			newReg += string(reg[0])
-//		}
-//		if reg[1] == '%' {
-//			newReg += "(.*)"
-//		} else {
-//			newReg += string(reg[0])
-//		}
-//	case l > 2:
-//		for i := 1; i < len(reg)-1; i++ {
-//			c := reg[i]
-//			if c != '%' {
-//				newReg += string(c)
-//				continue
-//			}
-//
-//			if i == 0 {
-//
-//			} else if i == len(reg) {
-//
-//			} else {
-//
-//			}
-//		}
-//	}
-//
-//	regexp,err:= regexp.Compile(newReg)
-//	if err!=nil{
-//		return false
-//	}
-//}
+//%ne 表示以ne结尾的字符串
+//yi% 表示以yi开始的字符串
+//yi%ne表示以yi开始ne结尾的字符串
+//y%d%ne表示以y开始中间包含d且以ne结尾的字符串
+func getRegex(reg string) (*regexp.Regexp, error) {
+	reg = strings.Trim(reg, "")
+	l := len(reg)
+	if l == 0 {
+		return nil, errors.New("need argument")
+	}
+
+	newReg := ""
+	for i := 0; i < l; i++ {
+		c := reg[i]
+		if c == '%' || c == '*' {
+			newReg += "(.*)"
+			continue
+		}
+		switch {
+		case i == 0:
+			newReg += "^" + string(c)
+		case l-1 == i:
+			newReg += string(c) + "$"
+		case i > 0 && i < l-1:
+			newReg += string(c)
+		}
+	}
+
+	return regexp.Compile(newReg)
+}

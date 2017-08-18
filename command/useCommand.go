@@ -1,8 +1,8 @@
 package command
 
 import (
-	"github.com/yidane/rid/log"
 	"github.com/yidane/rid/context"
+	"github.com/yidane/rid/log"
 )
 
 type UseCommand struct {
@@ -22,9 +22,10 @@ func (UseCommand) Exec(ricContext *context.RidContext, args ...string) {
 	err := ricContext.SetCurrentDatabase(dbName)
 	if err != nil {
 		log.Error(err)
+		return
 	}
 
-	log.Succeed("load database ", dbName, " success")
+	log.Succeed("load database [", dbName, "] success")
 }
 
 func (UseCommand) Usage() string {

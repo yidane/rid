@@ -154,7 +154,6 @@ func (httpContext *HttpContext) Download(id int, dbName, tableName string) (*Tab
 	}
 
 	return &TableScriptInfo{
-		DBName: dbName,
 		Name:   tableName,
 		Script: string(data),
 		Tick:   time.Now().Sub(now).Seconds(),

@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func  NewRequest(method, url string,cookies []*http.Cookie) (*http.Request, error) {
+func NewRequest(method, url string, cookies []*http.Cookie) (*http.Request, error) {
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		return nil, err
@@ -32,19 +32,19 @@ func  NewRequest(method, url string,cookies []*http.Cookie) (*http.Request, erro
 	return req, nil
 }
 
-func GetResponseContent(req *http.Request) ([]byte,[]*http.Cookie, error) {
+func GetResponseContent(req *http.Request) ([]byte, []*http.Cookie, error) {
 	client := &http.Client{}
 	client.Timeout = time.Hour
 	response, err := client.Do(req)
 	if err != nil {
-		return nil,nil, err
+		return nil, nil, err
 	}
 	defer response.Body.Close()
 
 	data, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return nil,nil, err
+		return nil, nil, err
 	}
 
-	return data,response.Cookies(), nil
+	return data, response.Cookies(), nil
 }

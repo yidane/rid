@@ -5,18 +5,18 @@ import (
 	"os"
 	"strings"
 
-	"github.com/yidane/rid/log"
-	"github.com/yidane/rid/context"
-	 "github.com/yidane/rid/command"
-	"flag"
 	"errors"
+	"flag"
+	"github.com/yidane/rid/command"
+	"github.com/yidane/rid/context"
+	"github.com/yidane/rid/log"
 	"time"
 )
 
 var ridContext *context.RidContext
 
 func main() {
-	err :=login()
+	err := login()
 	if err != nil {
 		log.Error(err)
 		return
@@ -42,15 +42,14 @@ func main() {
 			running = false
 			log.Succeed("rid is being exit")
 		default:
-			command.Exec(ridContext,cName, cArgs...)
+			command.Exec(ridContext, cName, cArgs...)
 		}
 	}
 
-	log.Succeed("finish ",time.Now().String())
+	log.Succeed("finish ", time.Now().String())
 }
 
-
-func login()error{
+func login() error {
 	uid := flag.String("uid", "", "What is your rid userid?")
 	pwd := flag.String("pwd", "", "What is your rid password?")
 
@@ -58,7 +57,7 @@ func login()error{
 
 	if *uid == "" {
 		flag.PrintDefaults()
-		return  errors.New("please use -uid to set rid userid")
+		return errors.New("please use -uid to set rid userid")
 	}
 	if *pwd == "" {
 		flag.PrintDefaults()

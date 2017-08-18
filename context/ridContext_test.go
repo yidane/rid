@@ -11,7 +11,7 @@ func Test_LoginFaild(t *testing.T) {
 		t.Error("there should have error message if login faild")
 	}
 	t.Log(err)
-	if ridClient.HttpContext.HasLogin{
+	if ridClient.HttpContext.HasLogin {
 		t.Error("login status should be false")
 	}
 }

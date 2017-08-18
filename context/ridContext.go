@@ -1,9 +1,9 @@
 package context
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"errors"
 	"runtime"
 	"sync"
 
@@ -40,12 +40,44 @@ type DBInfo struct {
 
 //TableScriptInfo 数据表对象信息
 type TableScriptInfo struct {
-	DBName string
 	Name   string
 	Script string
 	Tick   float64
 	HTTP   bool
 	Path   string
+	Error  *error
+}
+
+func (tableScriptInfo TableScriptInfo) Save() error {
+	if tableScriptInfo.HTTP {
+		f, err := os.Create(tableScriptInfo.Path)
+		if err != nil {
+			log.Error(err)
+		}
+		defer f.Close()
+		f.WriteString(tableScriptInfo.Script)
+	}
+	log.Succeed(tableScriptInfo.Name+"	%vs\r\n", tableScriptInfo.Tick)
+	return nil
+}
+
+func (tableScriptInfo TableScriptInfo) Exists() bool {
+	_, err := os.Stat(tableScriptInfo.Path)
+	if err == nil {
+		return true
+	}
+	if os.IsNotExist(err) {
+		return false
+	}
+	return false
+}
+
+func (ridContext *RidContext) createTableScriptInfo(name string) *TableScriptInfo {
+	tableScriptInfo := new(TableScriptInfo)
+	tableScriptInfo.Path = ridContext.Output + "\\" + name + ".sql"
+	tableScriptInfo.Name = name
+
+	return tableScriptInfo
 }
 
 //AllDataBases 返回数据库列表
@@ -104,97 +136,89 @@ func (ridContext *RidContext) DownloadAll() error {
 	if ridContext.CurrentDB == nil {
 		return errors.New("尚未选择数据库")
 	}
-
 	if len(ridContext.selectedTables) == 0 {
 		return errors.New("尚未选择任何表")
 	}
-
 	if ridContext.Output == "" {
 		return errors.New("尚未设置输出目录")
 	}
 
-	//创建临时文件夹
-	var outDir = ridContext.Output + ridContext.CurrentDB.Name
-	err := os.MkdirAll(outDir, 0777)
-	if err != nil {
-		return err
+	total := 0
+	s := 0
+	f := 0
+
+	for _, v := range ridContext.selectedTables {
+		if v {
+			total++
+		}
 	}
 
-	var existsFile = func(path string) bool {
-		_, err := os.Stat(path)
-		if err == nil {
-			return true
-		}
-		if os.IsNotExist(err) {
-			return false
-		}
-		return false
-	}
-
-	runtime.GOMAXPROCS(runtime.NumCPU())
-	ch := make(chan *TableScriptInfo)
+	runtime.GOMAXPROCS(runtime.NumCPU() * 5)
+	ch := make(chan *TableScriptInfo, 10)
 	go func() {
 		for {
 			select {
 			case table := <-ch:
-				if table.HTTP {
-					writeStringToFile(table.Path, table.Script)
-				}
-				log.Succeed(table.DBName+"	"+table.Name+"	%vs\r\n", table.Tick)
+				//判断保存是否成功
+				table.Save()
 			default:
 			}
 		}
 	}()
 
 	wg := sync.WaitGroup{}
-	wg.Add(len(ridContext.selectedTables))
-
-	for t := range ridContext.selectedTables {
-		go func(tab string) {
-			path := outDir + "/" + tab + ".sql"
-			tabInfo := TableScriptInfo{
-				DBName: ridContext.CurrentDB.Name,
-				Name:   tab,
-				Path:   path,
-			}
-			if !existsFile(path) {
-				tinfo, err := ridContext.HttpContext.Download(ridContext.CurrentDB.ID, ridContext.CurrentDB.Name, tab)
-				if err != nil {
-					fmt.Println(err)
+	wg.Add(total)
+	for k, v := range ridContext.selectedTables {
+		if v {
+			go func(tab string) {
+				tabInfo := ridContext.createTableScriptInfo(tab)
+				if !tabInfo.Exists() {
+					t, err := ridContext.HttpContext.Download(ridContext.CurrentDB.ID, ridContext.CurrentDB.Name, tab)
+					if err != nil {
+						tabInfo.Error = &err
+						f++
+					} else {
+						s++
+						tabInfo.HTTP = t.HTTP
+						tabInfo.Script = t.Script
+						tabInfo.Tick = t.Tick
+					}
 				}
-
-				tabInfo.HTTP = tinfo.HTTP
-				tabInfo.Script = tinfo.Script
-				tabInfo.Tick = tinfo.Tick
-			}
-
-			ch <- &tabInfo
-			wg.Done()
-		}(t)
+				ch <- tabInfo
+				wg.Done()
+			}(k)
+		}
 	}
-
 	wg.Wait()
 
-	fmt.Println("finish")
+	log.Succeed("Total:", total, "	Success:", s, "	Failed:", f)
+
 	return nil
 }
 
 //SetOutput set the output fold
-func (ridContext *RidContext) SetOutput(fold string) {
-	_, err := os.Stat(fold)
+func (ridContext *RidContext) SetOutput(fold string) error {
+	if ridContext.CurrentDB == nil {
+		return errors.New("no database selected")
+	}
+
+	foldPath := fold + "\\" + ridContext.CurrentDB.Name
+	_, err := os.Stat(foldPath)
 	if err == nil {
-		ridContext.Output = fold
-		return
+		ridContext.Output = foldPath
+		return nil
 	}
 
 	if os.IsNotExist(err) {
-		err := os.MkdirAll(fold, 0777)
+		err := os.MkdirAll(foldPath, 0777)
 		if err != nil {
-			log.Error(err)
+			return err
 		}
-		return
+		ridContext.Output = foldPath
+		return nil
 	}
-	log.Error(err)
+
+	return err
 }
 
 func (ridContext *RidContext) LoadDataBase() ([]string, error) {
@@ -244,15 +268,6 @@ func (ridContext *RidContext) LoadTables(dbName string) ([]string, error) {
 	return nil, errors.New(fmt.Sprint("no such database ", dbName))
 }
 
-func writeStringToFile(fileName, fileContent string) {
-	f, err := os.Create(fileName)
-	if err != nil {
-		log.Error(err)
-	}
-	defer f.Close()
-	f.WriteString(fileContent)
-}
-
 func (ridContext *RidContext) Login(uid, pwd string) error {
 	if len(uid) == 0 {
 		return errors.New("uid can not be nil")
@@ -282,7 +297,7 @@ func (ridContext *RidContext) RemoveFromCache(name ...string) {
 }
 
 func (ridContext *RidContext) ClearCache() {
-	for k, _ := range ridContext.selectedTables {
+	for k := range ridContext.selectedTables {
 		ridContext.selectedTables[k] = false
 	}
 }

@@ -13,7 +13,6 @@ func (RemoveCommand) Exec(ricContext *context.RidContext, args ...string) {
 
 }
 
-func(RemoveCommand) Usage() string{
+func (RemoveCommand) Usage() string {
 	return ""
 }
-
