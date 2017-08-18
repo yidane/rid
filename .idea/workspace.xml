@@ -5,9 +5,7 @@
     <bookmark url="file://$PROJECT_DIR$/command/command_test.go" line="55" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba1bb86c-5977-45dc-816f-1e149e3b2f7c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="ba1bb86c-5977-45dc-816f-1e149e3b2f7c" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,8 +47,8 @@
       <file leaf-file-name="log_windows.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/log/log_windows.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="21" column="26" lean-forward="true" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+            <state relative-caret-position="437">
+              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -81,9 +79,13 @@
         <entry file="file://$PROJECT_DIR$/log/log_unix.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="152">
-              <caret line="8" column="21" lean-forward="true" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+              <caret line="8" column="22" lean-forward="true" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
               <folding>
                 <element signature="e#83#107#0" expanded="true" />
+                <marker date="1503048136583" expanded="true" signature="162:218" ph="{...}" />
+                <marker date="1503048136583" expanded="true" signature="291:347" ph="{...}" />
+                <marker date="1503048136583" expanded="true" signature="397:453" ph="{...}" />
+                <marker date="1503048136583" expanded="true" signature="510:532" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -198,7 +200,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="61" />
     <option name="y" value="23" />
     <option name="width" value="1400" />
@@ -390,7 +392,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="886" extended-state="6" />
+    <frame x="-8" y="-8" width="1616" height="886" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22657253" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="223" y="158" width="389" height="508" />
@@ -843,17 +845,21 @@
     <entry file="file://$PROJECT_DIR$/log/log_unix.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
-          <caret line="8" column="21" lean-forward="true" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+          <caret line="8" column="22" lean-forward="true" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
           <folding>
             <element signature="e#83#107#0" expanded="true" />
+            <marker date="1503048136583" expanded="true" signature="162:218" ph="{...}" />
+            <marker date="1503048136583" expanded="true" signature="291:347" ph="{...}" />
+            <marker date="1503048136583" expanded="true" signature="397:453" ph="{...}" />
+            <marker date="1503048136583" expanded="true" signature="510:532" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/log/log_windows.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="21" column="26" lean-forward="true" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+        <state relative-caret-position="437">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding />
         </state>
       </provider>
