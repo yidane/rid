@@ -5,8 +5,8 @@
     <bookmark url="file://$PROJECT_DIR$/command/command_test.go" line="55" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba1bb86c-5977-45dc-816f-1e149e3b2f7c" name="Default" comment="重构代码">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="ba1bb86c-5977-45dc-816f-1e149e3b2f7c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,17 +31,27 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="command.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="command.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/command/command.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="74" column="31" lean-forward="true" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
+            <state relative-caret-position="190">
+              <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
               <folding>
                 <element signature="n#!!block;n#init#0" expanded="false" />
                 <element signature="n#!!block;n#packageCommand#0" expanded="false" />
                 <element signature="n#!!block;n#getCommand#0" expanded="false" />
                 <element signature="n#!!block;n#Exec#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="log_windows.go" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/log/log_windows.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="361">
+              <caret line="21" column="26" lean-forward="true" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -62,6 +72,18 @@
                 <marker date="1503047720173" expanded="false" signature="5151:5658" ph="{...}" />
                 <marker date="1503047720173" expanded="false" signature="5719:5943" ph="{...}" />
                 <marker date="1503047720173" expanded="false" signature="6002:6126" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="log_unix.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/log/log_unix.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="8" column="21" lean-forward="true" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+              <folding>
+                <element signature="e#83#107#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -161,12 +183,12 @@
         <option value="$PROJECT_DIR$/log/log_w.go" />
         <option value="$PROJECT_DIR$/command/downloadCommand.go" />
         <option value="$PROJECT_DIR$/log/log_unix.go" />
-        <option value="$PROJECT_DIR$/log/log_windows.go" />
         <option value="$PROJECT_DIR$/command/outCommand.go" />
         <option value="$PROJECT_DIR$/command/command_test.go" />
         <option value="$PROJECT_DIR$/context/httpContext.go" />
         <option value="$PROJECT_DIR$/context/ridContext.go" />
         <option value="$PROJECT_DIR$/command/command.go" />
+        <option value="$PROJECT_DIR$/log/log_windows.go" />
       </list>
     </option>
   </component>
@@ -207,6 +229,11 @@
             <path>
               <item name="rid" type="b2602c69:ProjectViewProjectNode" />
               <item name="rid" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rid" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rid" type="462c0819:PsiDirectoryNode" />
+              <item name="log" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -690,14 +717,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/log/log_unix.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="8" lean-forward="true" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Go/src/os/exec_posix.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -742,14 +761,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
           <caret line="61" column="5" lean-forward="false" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/log/log_windows.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="7" column="5" lean-forward="false" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -818,14 +829,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/command/command.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="74" column="31" lean-forward="true" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
+        <state relative-caret-position="190">
+          <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
           <folding>
             <element signature="n#!!block;n#init#0" expanded="false" />
             <element signature="n#!!block;n#packageCommand#0" expanded="false" />
             <element signature="n#!!block;n#getCommand#0" expanded="false" />
             <element signature="n#!!block;n#Exec#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log/log_unix.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="21" lean-forward="true" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
+          <folding>
+            <element signature="e#83#107#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log/log_windows.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="21" column="26" lean-forward="true" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>

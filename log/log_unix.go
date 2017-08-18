@@ -5,8 +5,8 @@ package log
 import (
 	syslog "log"
 )
-
-//Error display error
+ 
+//Error display error 
 func Error(v ...interface{}) {
 	syslog.Printf("%c[1;0;31m%s%c[0m\n", 0x1B, v, 0x1B)
 }

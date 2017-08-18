@@ -9,7 +9,7 @@ func Error(v ...interface{}) {
 	syslog.Println(v)
 }
 
-//Succeed display successful information
+//Succeed display successful information 
 func Succeed(v ...interface{}) {
 	syslog.Println(v)
 }
