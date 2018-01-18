@@ -1,13 +1,15 @@
 package command
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
-	"github.com/yidane/rid/context"
-	"github.com/yidane/rid/log"
 	"regexp"
 	"strings"
 	"sync"
+
+	"github.com/yidane/rid/context"
+	"github.com/yidane/rid/log"
 )
 
 type Command interface {
@@ -30,6 +32,7 @@ func init() {
 		packageCommand(OutCommand{})
 		packageCommand(RemoveCommand{})
 		packageCommand(UseCommand{})
+		packageCommand(ShowCommand{})
 	})
 }
 
@@ -61,9 +64,30 @@ func Exec(ridContext *context.RidContext, cName string, args ...string) {
 	(*c).Exec(ridContext, args...)
 }
 
-func Help(commandName ...[]string) {
-	//output all usage
-	fmt.Println(commandName)
+func Help(commandName ...string) {
+	buf := bytes.Buffer{}
+	errCmd := []string{}
+	if len(commandName) > 0 {
+		for _, c := range commandName {
+			if cmd, ok := cMap[c]; ok {
+				buf.WriteString(fmt.Sprintf(`	|%-20s|%s%s`, c, (*cmd).Usage(), "\n"))
+			} else {
+				errCmd = append(errCmd, c)
+			}
+		}
+	} else {
+		for _, cmd := range cMap {
+			buf.WriteString(fmt.Sprintf(`	|%-20s|%s%s`, (*cmd).Name(), (*cmd).Usage(), "\n"))
+		}
+	}
+
+	if buf.Len() > 0 {
+		log.Succeed("command usage as follows：")
+		fmt.Printf(buf.String())
+	}
+	if len(errCmd) > 0 {
+		log.Error(fmt.Sprintf("no such commands:%s", strings.Join(errCmd, ",")))
+	}
 }
 
 //采用%作为通配符

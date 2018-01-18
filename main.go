@@ -31,14 +31,20 @@ func main() {
 		if len(data) == 0 {
 			continue
 		}
-		input := strings.ToLower(strings.Trim(string(data), ""))
+		input := strings.ToLower(strings.TrimSpace(string(data)))
 		inputs := strings.Split(input, " ")
 		cName := inputs[0]
-		cArgs := inputs[1:]
+		cArgs := []string{}
+		for i := 1; i < len(inputs); i++ {
+			arg := strings.TrimSpace(inputs[i])
+			if len(arg) > 0 {
+				cArgs = append(cArgs, arg)
+			}
+		}
 
 		switch cName {
 		case "help":
-			command.Help(cArgs)
+			command.Help(cArgs...)
 		case "exit":
 			running = false
 			log.Succeed("rid is being exit")

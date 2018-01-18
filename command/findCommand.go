@@ -51,5 +51,5 @@ func (FindCommand) Exec(ridContext *context.RidContext, args ...string) {
 }
 
 func (FindCommand) Usage() string {
-	return ""
+	return "find [table];find some table"
 }

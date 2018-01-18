@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+
 	"github.com/yidane/rid/context"
 	"github.com/yidane/rid/log"
 )
@@ -52,5 +53,5 @@ func (AddCommand) Exec(ridContext *context.RidContext, args ...string) {
 }
 
 func (AddCommand) Usage() string {
-	return ""
+	return "add [table] add table into cache，`*` means all the tables belong the database you chose by command `use`"
 }

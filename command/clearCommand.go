@@ -22,5 +22,5 @@ func (ClearCommand) Exec(ridContext *context.RidContext, args ...string) {
 }
 
 func (ClearCommand) Usage() string {
-	return ""
+	return "clear;clear the cache"
 }

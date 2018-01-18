@@ -9,10 +9,10 @@ func (RemoveCommand) Name() string {
 	return "rm"
 }
 
-func (RemoveCommand) Exec(ricContext *context.RidContext, args ...string) {
-
+func (RemoveCommand) Exec(ridContext *context.RidContext, args ...string) {
+	ridContext.RemoveFromCache(args...)
 }
 
 func (RemoveCommand) Usage() string {
-	return ""
+	return "rm [table];remove table from cache"
 }
