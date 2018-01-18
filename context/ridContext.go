@@ -268,16 +268,14 @@ func (ridContext *RidContext) LoadTables(dbName string) ([]string, error) {
 	return nil, errors.New(fmt.Sprint("no such database ", dbName))
 }
 
-func (ridContext *RidContext) Login(uid, pwd string) error {
-	if len(uid) == 0 {
-		return errors.New("uid can not be nil")
-	}
-	if len(pwd) == 0 {
-		return errors.New("pwd can not be nil")
+func (ridContext *RidContext) Login(userInfo *UserInfo) error {
+	if userInfo == nil {
+		return errors.New("login user can not be nil")
 	}
 
 	ridContext.HttpContext = new(HttpContext)
-	return ridContext.HttpContext.Login(uid, pwd)
+	ridContext.HttpContext.CurrentUser = userInfo
+	return ridContext.HttpContext.Login()
 }
 
 func (ridContext *RidContext) AddToCache(name ...string) {

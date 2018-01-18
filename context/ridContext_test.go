@@ -2,11 +2,15 @@ package context
 
 import "testing"
 
+var testUserInfo = UserInfo{UserID: `zcm99`, Password: `dbn002385`}
+
+func init() {
+
+}
+
 func Test_LoginFaild(t *testing.T) {
-	uid := "zcm"
-	pwd := "zcm"
 	ridClient := &RidContext{}
-	err := ridClient.Login(uid, pwd)
+	err := ridClient.Login(&testUserInfo)
 	if err == nil {
 		t.Error("there should have error message if login faild")
 	}

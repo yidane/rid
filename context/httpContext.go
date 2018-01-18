@@ -10,30 +10,37 @@ import (
 	"strings"
 	"time"
 
-	ridHttp "github.com/yidane/rid/http"
 	"net/http"
+
+	ridHttp "github.com/yidane/rid/http"
 )
 
 const loginURL string = "http://rid.nxin.com/Login"
-const loadDataBaseURL string = "http://rid.nxin.com/index"
+const loadDataBaseURL string = "http://rid.nxin.com/indexOld"
 const loadTablesURL string = "http://rid.nxin.com/dbquery/getTables/"
 const exportURL string = "http://rid.nxin.com/dbquery/exportTableData/"
 
+//UserInfo 用户信息
+type UserInfo struct {
+	UserID   string
+	Password string
+}
+
+//HttpContext http上下文
 type HttpContext struct {
-	uid      string
-	pwd      string
-	Cookies  []*http.Cookie
-	HasLogin bool
+	CurrentUser *UserInfo
+	Cookies     []*http.Cookie
+	HasLogin    bool
 }
 
 //Login login rid
-func (httpContext *HttpContext) Login(uid, pwd string) error {
+func (httpContext *HttpContext) Login() error {
 	req, err := ridHttp.NewRequest("POST", loginURL, nil)
 	if err != nil {
 		return err
 	}
 
-	body := strings.NewReader("userName=" + uid + "&password=" + pwd)
+	body := strings.NewReader("userName=" + httpContext.CurrentUser.UserID + "&password=" + httpContext.CurrentUser.Password)
 	req.Body = ioutil.NopCloser(body)
 
 	data, cookies, err := ridHttp.GetResponseContent(req)
@@ -61,8 +68,6 @@ func (httpContext *HttpContext) Login(uid, pwd string) error {
 	}
 
 	httpContext.HasLogin = true
-	httpContext.uid = uid
-	httpContext.pwd = pwd
 	return nil
 }
 
@@ -84,7 +89,7 @@ func (httpContext *HttpContext) LoadDataBase() ([]*DBInfo, error) {
 
 	reg, _ := regexp.Compile(`\[{\"id.*\]`)
 	if !reg.Match(data) {
-		return nil, errors.New("未找到相应数据库信息")
+		return nil, fmt.Errorf("未找到相应数据库信息:%s", string(data))
 	}
 
 	dbs := []*DBInfo{}

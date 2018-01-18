@@ -7,10 +7,11 @@ import (
 
 	"errors"
 	"flag"
+	"time"
+
 	"github.com/yidane/rid/command"
 	"github.com/yidane/rid/context"
 	"github.com/yidane/rid/log"
-	"time"
 )
 
 var ridContext *context.RidContext
@@ -65,5 +66,6 @@ func login() error {
 	}
 
 	ridContext = context.NewRidContext()
-	return ridContext.Login(*uid, *pwd)
+	userInfo := context.UserInfo{UserID: *uid, Password: *pwd}
+	return ridContext.Login(&userInfo)
 }

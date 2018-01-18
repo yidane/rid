@@ -1,6 +1,8 @@
 package command
 
 import (
+	"fmt"
+
 	"github.com/yidane/rid/context"
 	"github.com/yidane/rid/log"
 )
@@ -13,6 +15,8 @@ func (LoadCommand) Name() string {
 }
 
 func (LoadCommand) Exec(ricContext *context.RidContext, args ...string) {
+	fmt.Println(args)
+
 	//load all database
 	if len(args) == 0 {
 		dbArr, err := ricContext.LoadDataBase()

@@ -3,28 +3,26 @@ package context
 import "testing"
 
 func Test_HttpLoginFail(t *testing.T) {
-	httpContext := HttpContext{}
-	err := httpContext.Login("yibihao1", "yibihao")
+	httpContext := HttpContext{CurrentUser: &UserInfo{UserID: "dbnlm008", Password: "dbn002385"}}
+	err := httpContext.Login()
 
 	if err == nil {
-		t.Error("there should have error message when login faild")
+		t.Error("there must be have error message when login faild")
 	}
-	t.Log(err)
 }
 
 func Test_HttpLoginSuccess(t *testing.T) {
-	httpContext := HttpContext{}
-	err := httpContext.Login("yibihao", "yibihao")
+	httpContext := HttpContext{CurrentUser: &testUserInfo}
+	err := httpContext.Login()
 
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log("login status is ", httpContext.HasLogin)
 }
 
 func Test_LoadDatabase(t *testing.T) {
-	httpContext := HttpContext{}
-	err := httpContext.Login("yibihao", "yibihao")
+	httpContext := HttpContext{CurrentUser: &testUserInfo}
+	err := httpContext.Login()
 
 	if err != nil {
 		t.Error(err)
@@ -44,8 +42,8 @@ func Test_LoadDatabase(t *testing.T) {
 }
 
 func Test_LoadTables(t *testing.T) {
-	httpContext := HttpContext{}
-	err := httpContext.Login("yibihao", "yibihao")
+	httpContext := HttpContext{CurrentUser: &testUserInfo}
+	err := httpContext.Login()
 
 	if err != nil {
 		t.Error(err)
