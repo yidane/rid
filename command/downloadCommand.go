@@ -30,3 +30,7 @@ func (DownloadCommand) Exec(ridContext *context.RidContext, args ...string) {
 func (DownloadCommand) Usage() string {
 	return "download;begin to download the scripts"
 }
+
+func init() {
+	packageCommand(DownloadCommand{})
+}

@@ -16,3 +16,7 @@ func (RemoveCommand) Exec(ridContext *context.RidContext, args ...string) {
 func (RemoveCommand) Usage() string {
 	return "rm [table];remove table from cache"
 }
+
+func init() {
+	packageCommand(RemoveCommand{})
+}

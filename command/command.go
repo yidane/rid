@@ -21,20 +21,20 @@ type Command interface {
 var cMap = make(map[string]*Command)
 var once sync.Once = sync.Once{}
 
-func init() {
-	once.Do(func() {
-		packageCommand(AddCommand{})
-		packageCommand(ClearCommand{})
-		packageCommand(DownloadCommand{})
-		packageCommand(FindCommand{})
-		packageCommand(ListCommand{})
-		packageCommand(LoadCommand{})
-		packageCommand(OutCommand{})
-		packageCommand(RemoveCommand{})
-		packageCommand(UseCommand{})
-		packageCommand(ShowCommand{})
-	})
-}
+// func init() {
+// 	once.Do(func() {
+// 		packageCommand(AddCommand{})
+// 		packageCommand(ClearCommand{})
+// 		packageCommand(DownloadCommand{})
+// 		packageCommand(FindCommand{})
+// 		packageCommand(ListCommand{})
+// 		packageCommand(LoadCommand{})
+// 		packageCommand(OutCommand{})
+// 		packageCommand(RemoveCommand{})
+// 		packageCommand(UseCommand{})
+// 		packageCommand(ShowCommand{})
+// 	})
+// }
 
 func packageCommand(command Command) {
 	if command == nil {

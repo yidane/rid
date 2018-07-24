@@ -32,3 +32,7 @@ func (command OutCommand) Exec(ridContext *context.RidContext, args ...string) {
 func (OutCommand) Usage() string {
 	return "output;choose some fold to save the downloaded files"
 }
+
+func int() {
+	packageCommand(OutCommand{})
+}

@@ -75,3 +75,7 @@ func outPut(strArr []string) {
 func (LoadCommand) Usage() string {
 	return "load [database];load the databases or tables from remote server."
 }
+
+func init() {
+	packageCommand(LoadCommand{})
+}

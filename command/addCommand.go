@@ -55,3 +55,7 @@ func (AddCommand) Exec(ridContext *context.RidContext, args ...string) {
 func (AddCommand) Usage() string {
 	return "add [table] add table into cache，`*` means all the tables belong the database you chose by command `use`"
 }
+
+func init() {
+	packageCommand(AddCommand{})
+}

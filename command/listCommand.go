@@ -29,3 +29,7 @@ func (ListCommand) Exec(ridContext *context.RidContext, args ...string) {
 func (ListCommand) Usage() string {
 	return "list;list all the tables in cache"
 }
+
+func init() {
+	packageCommand(ListCommand{})
+}

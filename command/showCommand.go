@@ -26,3 +26,7 @@ func (ShowCommand) Exec(ridContext *context.RidContext, args ...string) {
 func (ShowCommand) Usage() string {
 	return "show:show current database"
 }
+
+func init() {
+	packageCommand(ShowCommand{})
+}

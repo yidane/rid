@@ -2,8 +2,9 @@ package command
 
 import (
 	"fmt"
-	"github.com/yidane/rid/context"
 	"testing"
+
+	"github.com/yidane/rid/context"
 )
 
 func Test_Help(t *testing.T) {
@@ -42,7 +43,7 @@ func Test_RegexMatch(t *testing.T) {
 
 func Test_Command(t *testing.T) {
 	ridContext := context.NewRidContext()
-	if err := ridContext.Login("yibihao", "yibihao"); err != nil {
+	if err := ridContext.Login(nil); err != nil {
 		t.Error(err)
 		return
 	}

@@ -53,3 +53,7 @@ func (FindCommand) Exec(ridContext *context.RidContext, args ...string) {
 func (FindCommand) Usage() string {
 	return "find [table];find some table"
 }
+
+func init() {
+	packageCommand(FindCommand{})
+}

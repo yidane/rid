@@ -31,3 +31,7 @@ func (UseCommand) Exec(ricContext *context.RidContext, args ...string) {
 func (UseCommand) Usage() string {
 	return "use [database];use some database like T-SQL"
 }
+
+func init() {
+	packageCommand(UseCommand{})
+}
